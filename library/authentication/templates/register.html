@@ -1,0 +1,62 @@
+{% extends "base.html" %} {% block title %}Реєстрація{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">Registration</h2>
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="John" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Doe" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Middle Name (Optional)</label>
+                            <input type="text" name="middle_name" class="form-control" placeholder="Middle Name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="email@example.com" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="********" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Role</label>
+                            <select name="role" class="form-select">
+                                <option value="0">Visitor</option>
+                                <option value="1">Librarian</option>
+                            </select>
+                            <div class="form-text">Choose your role in the library system.</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Already have an account? <a href="{% url 'login' %}">Login here</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

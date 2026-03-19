@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}User Details | Library{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'user_admin_list' %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Back to users
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-light">
+        <h1 class="h4 mb-0">User Details</h1>
+    </div>
+
+    <div class="card-body">
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">ID</p>
+                <p class="fw-semibold">{{ user_obj.id }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Email</p>
+                <p class="fw-semibold">{{ user_obj.email }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">First name</p>
+                <p class="fw-semibold">{{ user_obj.first_name|default:"-" }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Middle name</p>
+                <p class="fw-semibold">{{ user_obj.middle_name|default:"-" }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Last name</p>
+                <p class="fw-semibold">{{ user_obj.last_name|default:"-" }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Role</p>
+                <p>
+                    {% if user_obj.role == 1 %}
+                        <span class="badge bg-dark">Librarian</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Visitor</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Status</p>
+                <p>
+                    {% if user_obj.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Inactive</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Created at</p>
+                <p class="fw-semibold">{{ user_obj.created_at }}</p>
+            </div>
+
+            <div class="col-md-6">
+                <p class="mb-1 text-muted">Updated at</p>
+                <p class="fw-semibold">{{ user_obj.updated_at }}</p>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <a href="{% url 'user_books' user_obj.id %}" class="btn btn-outline-primary btn-sm">
+            Show Books
+        </a>
+
+    </div>
+</div>
+{% endblock %}

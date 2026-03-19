@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Create Book{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Create Book</h1>
+
+    <a href="{% url 'book_list' %}" class="btn btn-outline-secondary btn-sm">
+        ← Back
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Name <span class="text-danger">*</span></label>
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ name|default:'' }}"
+                    required
+                    maxlength="128"
+                    placeholder="Enter book name">
+                <small class="text-muted">Maximum 128 characters</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                    name="description"
+                    class="form-control"
+                    maxlength="256"
+                    placeholder="Enter book description"
+                    rows="3">{{ description|default:'' }}</textarea>
+                <small class="text-muted">Maximum 256 characters</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Count <span class="text-danger">*</span></label>
+                <input
+                    type="number"
+                    name="count"
+                    class="form-control"
+                    value="{{ count|default:'10' }}"
+                    required
+                    min="0"
+                    placeholder="Enter number of copies">
+                <small class="text-muted">Must be a non-negative number</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Authors</label>
+                <select name="author_ids" class="form-select" multiple size="6">
+                    {% for author in authors %}
+                        <option value="{{ author.id }}" {% if author.id|stringformat:"s" in selected_author_ids %}selected{% endif %}>
+                            {{ author.name }} {{ author.surname }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <small class="text-muted">Hold Ctrl/Cmd to select multiple authors</small>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Create Book</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

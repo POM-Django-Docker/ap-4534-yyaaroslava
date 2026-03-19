@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}All Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="mb-4">
+        <h2>All Library Orders</h2>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="bg-light">
+                <tr class="text-secondary small text-uppercase">
+                    <th class="border-0 p-3">User</th>
+                    <th class="border-0 p-3">Book</th>
+                    <th class="border-0 p-3 text-center">Created</th>
+                    <th class="border-0 p-3 text-center">Status</th>
+                    <th class="border-0 p-3 text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for o in orders %}
+                <tr class="border-bottom">
+                    <td class="p-3">
+                        <span class="fw-bold text-dark">{{ o.user.email }}</span>
+                    </td>
+                    <td class="p-3 text-primary">{{ o.book.name }}</td>
+                    <td class="p-3 text-center text-muted">{{ o.created_at|date:"d M Y" }}</td>
+                    <td class="p-3 text-center">
+                        {% if o.end_at %}
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2">Returned</span>
+                        {% else %}
+                            <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-3 py-2">On Hands</span>
+                        {% endif %}
+                    </td>
+                    <td class="p-3 text-end">
+                        {% if not o.end_at %}
+                        <form method="post" action="{% url 'order_close' o.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-primary px-3 shadow-sm">Close Order</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">
+                        <h4 class="mb-0">No orders found in the system.</h4>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

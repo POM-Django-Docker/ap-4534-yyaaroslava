@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Authors{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Authors</h2>
+
+    <a href="{% url 'author_admin_create' %}" class="btn btn-primary">
+        Add Author
+    </a>
+</div>
+
+<div class="list-group">
+    {% for author in authors %}
+
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+
+        <div>
+            <strong>{{ author.name }} {{ author.surname }}</strong><br>
+            <small class="text-muted">{{ author.patronymic }}</small>
+        </div>
+
+        <div class="d-flex gap-2">
+
+            <a href="{% url 'author_admin_update' author.id %}" class="btn btn-outline-secondary btn-sm">
+                Edit
+            </a>
+
+            <form method="post" action="{% url 'author_admin_delete' author.id %}" class="m-0">
+                {% csrf_token %}
+                <button
+                    type="submit"
+                    class="btn btn-outline-danger btn-sm"
+                    onclick="return confirm('Delete author {{ author.name }} {{ author.surname }}?')">
+                    Delete
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="alert alert-secondary">
+        No authors yet.
+    </div>
+
+    {% endfor %}
+</div>
+
+{% endblock %}

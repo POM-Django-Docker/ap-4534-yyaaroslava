@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Book{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">{{ book.name }}</h2>
+
+    <a href="{% url 'book_list' %}" class="btn btn-outline-secondary btn-sm">
+        ← Back
+    </a>
+</div>
+
+<div class="list-group mb-4">
+
+    <div class="list-group-item">
+        <strong>Description</strong><br>
+        <span class="text-muted">
+            {{ book.description|default:"No description" }}
+        </span>
+    </div>
+
+    <div class="list-group-item d-flex justify-content-between align-items-center">
+        <strong>Available copies</strong>
+        <span class="badge bg-secondary">
+            {{ book.count }}
+        </span>
+    </div>
+
+</div>
+
+{% if request.user.is_authenticated and request.user.role == 0 %}
+    <div class="mb-4">
+        {% if book.count > 0 %}
+            <form method="post" action="{% url 'order_create' book.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button class="btn btn-success">
+                    Take book
+                </button>
+            </form>
+        {% else %}
+            <span class="badge bg-danger">
+                Not available
+            </span>
+        {% endif %}
+    </div>
+{% endif %}
+
+<h4 class="mb-3">Authors</h4>
+
+<div class="list-group">
+    {% for a in book.authors.all %}
+        <div class="list-group-item">
+            {{ a.name }} {{ a.surname }}
+        </div>
+    {% empty %}
+        <div class="alert alert-secondary">
+            No authors attached
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

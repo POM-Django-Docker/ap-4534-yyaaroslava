@@ -1,0 +1,79 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+
+    <a class="navbar-brand" href="{% url 'home' %}">My Library</a>
+
+    <div class="collapse navbar-collapse">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if request.user.is_authenticated %}
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'book_list' %}">
+              Books
+            </a>
+          </li>
+
+          {% if request.user.role == 1 %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'author_admin_list' %}">
+              Authors
+            </a>
+          </li>
+          {% endif %}
+
+          {% if request.user.role == 0 %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'my_orders' %}">
+              My orders
+            </a>
+          </li>
+          {% endif %}
+
+          {% if request.user.role == 1 %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'all_orders' %}">
+              All orders
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'user_admin_list' %}">
+              Users
+            </a>
+          </li>
+          {% endif %}
+
+        {% endif %}
+      </ul>
+
+      <div class="d-flex align-items-center">
+        {% if request.user.is_authenticated %}
+
+          <span class="navbar-text me-3 text-light">
+            Welcome, <strong>{{ request.user.first_name }}</strong>!
+          </span>
+
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+              Logout
+            </button>
+          </form>
+
+        {% else %}
+
+          <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2">
+            Login
+          </a>
+
+          <a href="{% url 'register' %}" class="btn btn-primary btn-sm">
+            Register
+          </a>
+
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</nav>
